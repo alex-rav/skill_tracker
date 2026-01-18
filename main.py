@@ -53,4 +53,6 @@ def add_skill(skill: Skill):
 @app.delete("/skills/{skill_id}")
 def delete_skill(skill_id: int):
     global skills
-    
+    for skill in skills:
+        if skill["id"] == skill_id:
+            
