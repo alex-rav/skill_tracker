@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill tracker</title>
+</head>
+<body>
+    
+    <h1>Skills</h1>
+
+    <ul id="skills"></ul>
+
+    <input id="skillInput" placeholder="Новый навык" />
+    <button id="addBtn">Добавить</button>
+
+    <script>
+        const skillsList = document.getElementById("skills");
+        const input = document.getElementById("skillInput");
+        const button = document.getElementById("addBtn");
+
+        function loadSkills() {
+            fetch("http://127.0.0.1:8000/skills")
+                .then(response => response.json())
+                .then(data => {
+                    skillsList.innerHTML = "";
+                    data.forEach(skill => {
+                        const li = document.createElement("li");
+                        li.textContent = skill.name;
+                        skillsList.appendChild(li);
+                    });
+                });
+        }
+
+        button.addEventListener("click", () => {
+            const name = input.value;
+            if (!name) return;
+
+            fetch("http://127.0.0.1:8000/skills", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name })
+            }).then(() => {
+                input.value = "";
+                loadSkills();
+            });
+        });
+
+        loadSkills();
+    </script>
+</body>
+</html>
