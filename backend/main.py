@@ -1,12 +1,11 @@
-import json
 from pathlib import Path
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from storage import read_skills, write_skills
+from fastapi import HTTPException
 
 app = FastAPI()
-
-DATA_FILE = Path("skills.json")
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,40 +18,45 @@ app.add_middleware(
 class Skill(BaseModel):
     name: str
 
-def load_skills():
-    if not DATA_FILE.exists():
-        return []
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-    
-def save_skills(skills):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(skills, f, ensure_ascii=False, indent=2)
-
-skills = load_skills()
-
 @app.get("/health")
 def health_check():
     return {"status":"ok"}
 
 @app.get("/skills")
 def get_skills():
-    return skills
+    return read_skills()
 
 @app.post("/skills")
 def add_skill(skill: Skill):
-    new_id = len(skills) + 1
+    skills = read_skills()
+
+    if skills:
+         
+         new_id = max(item.get("id", 0) for item in skills) + 1
+
+    else:
+
+         new_id = 1
+
     new_skill = {
-        "id": new_id,
-        "name": skill.name
+         "id": new_id,
+         "name": skill.name
     }
+
     skills.append(new_skill)
-    save_skills(skills)
+    write_skills(skills)
+
     return new_skill
 
 @app.delete("/skills/{skill_id}")
 def delete_skill(skill_id: int):
-    global skills
-    for skill in skills:
-        if skill["id"] == skill_id:
+    skills = read_skills()
+
+    filtered_skills = [s for s in skills if s["id"] != skill_id]
+
+    if len(filtered_skills) == len(skills):
+            raise HTTPException(status_code=404, detail="Skill not found")
+    
+    write_skills(filtered_skills)
+    return {"status": "deleted"}
             
