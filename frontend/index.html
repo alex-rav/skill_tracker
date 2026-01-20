@@ -6,49 +6,47 @@
     <title>Skill tracker</title>
 </head>
 <body>
-    
-    <h1>Skills</h1>
 
-    <ul id="skills"></ul>
+    <h1>Skill Tracker</h1>
 
-    <input id="skillInput" placeholder="Новый навык" />
-    <button id="addBtn">Добавить</button>
+    <!-- Общий прогресс -->
+    <section>
+        <h2>Общий прогресс</h2>
+        <progress value="30" max="100"></progress>
+        <span>30%</span>
+    </section>
 
-    <script>
-        const skillsList = document.getElementById("skills");
-        const input = document.getElementById("skillInput");
-        const button = document.getElementById("addBtn");
+    <!-- Backend -->
+    <section>
+        <h2>Backend</h2>
 
-        function loadSkills() {
-            fetch("http://127.0.0.1:8000/skills")
-                .then(response => response.json())
-                .then(data => {
-                    skillsList.innerHTML = "";
-                    data.forEach(skill => {
-                        const li = document.createElement("li");
-                        li.textContent = skill.name;
-                        skillsList.appendChild(li);
-                    });
-                });
-        }
+        <div class="skill">
+            <div class="skill-header">
+                <span>FastAPI</span>
+                <progress value="40" max="100"></progress>
+                <span>40%</span>
+            </div>
 
-        button.addEventListener("click", () => {
-            const name = input.value;
-            if (!name) return;
+            <ul class="subskills">
+                <li><input type="checkbox"> Routing</li>
+                <li><input type="checkbox"> Pydantic</li>
+                <li><input type="checkbox"> Services</li>
+            </ul>
+        </div>
+    </section>
 
-            fetch("http://127.0.0.1:8000/skills", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ name })
-            }).then(() => {
-                input.value = "";
-                loadSkills();
-            });
-        });
+    <!-- Frontend -->
+    <section>
+        <h2>Frontend</h2>
 
-        loadSkills();
-    </script>
+        <div class="skill">
+            <div class="skill-header">
+                <span>HTML / CSS</span>
+                <progress value="20" max="100"></progress>
+                <span>20%</span>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>

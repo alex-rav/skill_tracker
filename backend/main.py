@@ -1,8 +1,7 @@
-from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from services import get_all_skills, create_skill, delete_skill
+from services import get_all_skills, create_skill, delete_skill, get_skill_by_category
 
 app = FastAPI()
 
@@ -16,7 +15,7 @@ app.add_middleware(
 
 class SkillCreate(BaseModel):
     name: str
-    categoty: str
+    category: str
 
 @app.get("/health")
 def health_check():
@@ -26,10 +25,20 @@ def health_check():
 def get_skills():
     return get_all_skills()
 
+@app.get("/skills/by-category")
+def skills_by_category():
+    return get_skill_by_category()
+
 
 @app.post("/skills")
 def add_skill(skill: SkillCreate):
-    created = create_skill(skill.name)
+    try:
+        created = create_skill(skill.name, skill.category)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
 
     if created is None:
         raise HTTPException(

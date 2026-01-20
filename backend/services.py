@@ -1,4 +1,5 @@
 from storage import read_skills, write_skills
+from   constants import CATEGORIES
 
 
 def get_all_skills():
@@ -7,6 +8,9 @@ def get_all_skills():
 # Добавление с проверкой на дубликат
 
 def create_skill(name: str, category: str):
+    if category not in CATEGORIES:
+        raise ValueError("Invalid category")
+
     skills = read_skills()
 
     for skill in skills:
@@ -59,3 +63,18 @@ def delete_skill(skill_id: int) -> bool:
     
     write_skills(filtered_skills)
     return True
+
+
+def get_skill_by_category():
+    skills = read_skills()
+    result = {}
+
+    for skill in skills:
+        category = skill["category"]
+
+        if category not in result:
+            result[category] = []
+
+        result[category].append(skill)
+
+    return result
