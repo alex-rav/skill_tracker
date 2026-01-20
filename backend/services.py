@@ -6,7 +6,7 @@ def get_all_skills():
 
 # Добавление с проверкой на дубликат
 
-def create_skill(name: str):
+def create_skill(name: str, category: str):
     skills = read_skills()
 
     for skill in skills:
@@ -17,7 +17,8 @@ def create_skill(name: str):
 
     new_skill = {
         "id": new_id,
-        "name": name
+        "name": name,
+        "category": category
     }
 
     skills.append(new_skill)

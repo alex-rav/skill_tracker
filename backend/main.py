@@ -16,6 +16,7 @@ app.add_middleware(
 
 class SkillCreate(BaseModel):
     name: str
+    categoty: str
 
 @app.get("/health")
 def health_check():
