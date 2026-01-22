@@ -15,12 +15,21 @@
         <h1>Skill Tracker</h1>
 
         <div class="form-row">
-            <input type="text" class="input" placeholder="Название навыка">
-            <button class="btn">Добавить</button>
-            <button class="btn btn-danger">Удалить</button>
+            <input id="skillNameInput" class="input" placeholder="Название навыка">
+
+            <select id="categorySelect" class="input">
+                <option value="backend">Backend</option>
+                <option value="frontend">Frontend</option>
+                <option value="tools">Tools</option>
+            </select>
+
+            <button id="addSkillBtn" class="btn">Добавить</button>
         </div>
 
-        <!-- Общий прогресс -->
+        <div id="skillsList"></div>
+        
+    <!--
+        
         <section class="section">
             <h2 class="section-title">Общий прогресс</h2>
 
@@ -28,7 +37,7 @@
             <span>30%</span>
         </section>
 
-        <!-- Backend -->
+        
         <section class="section">
             <h2 class="section-title">Backend</h2>
 
@@ -50,7 +59,7 @@
             </div>
         </section>
 
-        <!-- Frontend -->
+        
         <section class="section">
             <h2 class="section-title">Frontend</h2>
 
@@ -64,7 +73,25 @@
                 </div>
             </div>
         </section>
+    -->
+
     </div>
+
+    <script>
+        const skillList = document.getElementById("skillsList");
+        const nameInput = document.getElementById("skillNameInput");
+        const categorySelect = document.getElementById("categorySelect");
+        const addButton = document.getElementById("addSkillBtn");
+
+        function loadSkills() {
+            fetch("http://127.0.0.1:8000/skills")
+                .then(response => response.json())
+                .then(skills => {
+                    skillsList.innerHTML = "";
+                    
+                })
+        }
+    </script>
 
 </body>
 </html>
