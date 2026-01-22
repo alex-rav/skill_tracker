@@ -9,46 +9,55 @@
 </head>
 <body>
 
-    <h1>Skill Tracker</h1>
+    <div class="container">
 
-    <!-- Общий прогресс -->
-    <section>
-        <h2>Общий прогресс</h2>
-        <progress value="30" max="100"></progress>
-        <span>30%</span>
-    </section>
+        <h1>Skill Tracker</h1>
 
-    <!-- Backend -->
-    <section>
-        <h2>Backend</h2>
+        <!-- Общий прогресс -->
+        <section class="section">
+            <h2 class="section-title">Общий прогресс</h2>
 
-        <div class="skill">
-            <div class="skill-header">
-                <span>FastAPI</span>
-                <progress value="40" max="100"></progress>
-                <span>40%</span>
+            <progress value="30" max="100"></progress>
+            <span>30%</span>
+        </section>
+
+        <!-- Backend -->
+        <section class="section">
+            <h2 class="section-title">Backend</h2>
+
+            <div class="skill-grid">
+                
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>FastAPI</span>
+                        <progress value="40" max="100"></progress>
+                        <span>40%</span>
+                    </div>
+
+                    <ul class="subskills">
+                        <li><input type="checkbox"> Routing</li>
+                        <li><input type="checkbox"> Pydantic</li>
+                        <li><input type="checkbox"> Services</li>
+                    </ul>
+                </div>
             </div>
+        </section>
 
-            <ul class="subskills">
-                <li><input type="checkbox"> Routing</li>
-                <li><input type="checkbox"> Pydantic</li>
-                <li><input type="checkbox"> Services</li>
-            </ul>
-        </div>
-    </section>
+        <!-- Frontend -->
+        <section class="section">
+            <h2 class="section-title">Frontend</h2>
 
-    <!-- Frontend -->
-    <section>
-        <h2>Frontend</h2>
-
-        <div class="skill">
-            <div class="skill-header">
-                <span>HTML / CSS</span>
-                <progress value="20" max="100"></progress>
-                <span>20%</span>
+            <div class="skill-grid">
+                <div class="skill">
+                    <div class="skill-header">
+                        <span>HTML / CSS</span>
+                        <progress value="20" max="100"></progress>
+                        <span>20%</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
 </body>
 </html>
