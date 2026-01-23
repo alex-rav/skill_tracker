@@ -78,20 +78,82 @@
     </div>
 
     <script>
-        const skillList = document.getElementById("skillsList");
-        const nameInput = document.getElementById("skillNameInput");
-        const categorySelect = document.getElementById("categorySelect");
-        const addButton = document.getElementById("addSkillBtn");
+    const skillsList = document.getElementById("skillsList");
+    const nameInput = document.getElementById("skillNameInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const addButton = document.getElementById("addSkillBtn");
 
-        function loadSkills() {
-            fetch("http://127.0.0.1:8000/skills")
-                .then(response => response.json())
-                .then(skills => {
-                    skillsList.innerHTML = "";
-                    
-                })
+    function loadSkills() {
+      fetch("http://127.0.0.1:8000/skills")
+        .then(response => response.json())
+        .then(skills => {
+          skillsList.innerHTML = "";
+
+          skills.forEach(skill => {
+            const skillEl = document.createElement("div");
+            skillEl.className = "skill";
+
+            skillEl.innerHTML = `
+              <div class="skill-header">
+                <span>${skill.name}</span>
+                <span>0%</span>
+              </div>
+
+              <progress value="0" max="100"></progress>
+
+              <button class="btn btn-danger">
+                Удалить
+              </button>
+            `;
+
+            const deleteBtn = skillEl.querySelector(".btn-danger");
+            deleteBtn.addEventListener("click", () => {
+              deleteSkill(skill.id);
+            });
+
+            skillsList.appendChild(skillEl);
+          });
+        });
+    }
+
+    function addSkill() {
+      const name = nameInput.value.trim();
+      const category = categorySelect.value;
+
+      if (!name) return;
+
+      fetch("http://127.0.0.1:8000/skills", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: name,
+          category: category
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          alert("Навык уже существует");
+          return;
         }
-    </script>
+        nameInput.value = "";
+        loadSkills();
+      });
+    }
 
+    function deleteSkill(id) {
+      fetch(`http://127.0.0.1:8000/skills/${id}`, {
+        method: "DELETE"
+      })
+      .then(() => {
+        loadSkills();
+      });
+    }
+
+    addButton.addEventListener("click", addSkill);
+
+    loadSkills();
+  </script>
 </body>
 </html>
