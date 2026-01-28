@@ -84,7 +84,7 @@
     const addButton = document.getElementById("addSkillBtn");
 
     function loadSkills() {
-      fetch("http://127.0.0.1:8000/skills")
+      fetch("/api/skills")
         .then(response => response.json())
         .then(skills => {
           skillsList.innerHTML = "";
