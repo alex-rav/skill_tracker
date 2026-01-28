@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "HTML",
+    "category": "frontend"
+  },
+  {
+    "id": 2,
+    "name": "CSS",
+    "category": "frontend"
+  },
+  {
+    "id": 3,
+    "name": "JS",
+    "category": "frontend"
+  }
+]
