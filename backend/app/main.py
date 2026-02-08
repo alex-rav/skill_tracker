@@ -1,9 +1,17 @@
+import os
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.services import get_all_skills, create_skill, delete_skill, get_skill_by_category
 
 app = FastAPI()
+
+# Абсолютный путь к папке frontend
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+frontend_path = os.path.join(project_root, "frontend")
+
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 app.add_middleware(
     CORSMiddleware,
