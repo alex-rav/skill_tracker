@@ -1,6 +1,7 @@
 async function loadSkills() {
   try {
     const response = await fetch("/api/skills"); // относительный путь
+    if (!response.ok) throw new Error("Ошибка API");
     const skills = await response.json();
 
     const container = document.getElementById("skills-container");
@@ -12,8 +13,8 @@ async function loadSkills() {
 
       card.innerHTML = `
         <span>${skill.name}</span>
-        <progress value="${skill.level}" max="100"></progress>
-        <span>${skill.level}%</span>
+        <progress value="${skill.level || 0}" max="100"></progress>
+        <span>${skill.level || 0}%</span>
       `;
 
       container.appendChild(card);
@@ -24,3 +25,4 @@ async function loadSkills() {
 }
 
 loadSkills();
+

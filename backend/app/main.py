@@ -7,20 +7,6 @@ from backend.app.services import get_all_skills, create_skill, delete_skill, get
 
 app = FastAPI()
 
-# Абсолютный путь к папке frontend
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-frontend_path = os.path.join(project_root, "frontend")
-
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 class SkillCreate(BaseModel):
     name: str
     category: str
@@ -29,16 +15,16 @@ class SkillCreate(BaseModel):
 def health_check():
     return {"status":"ok"}
 
-@app.get("/skills")
+@app.get("/api/skills")
 def get_skills():
     return get_all_skills()
 
-@app.get("/skills/by-category")
+@app.get("/api/skills/by-category")
 def skills_by_category():
     return get_skill_by_category()
 
 
-@app.post("/skills")
+@app.post("/api/skills")
 def add_skill(skill: SkillCreate):
     try:
         created = create_skill(skill.name, skill.category)
@@ -56,9 +42,16 @@ def add_skill(skill: SkillCreate):
     return created
 
 
-@app.delete("/skills/{skill_id}")
+@app.delete("/api/skills/{skill_id}")
 def remove_skill(skill_id: int):
     success = delete_skill(skill_id)
     if not success:
         raise HTTPException(status_code=404, detail="Skill not found")
     return {"status": "deleted"}
+
+# Абсолютный путь к фронту
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+frontend_path = os.path.join(project_root, "frontend")
+
+# **StaticFiles должен идти последним**, чтобы не перехватывать /api
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
