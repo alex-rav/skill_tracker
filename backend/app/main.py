@@ -5,6 +5,12 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.services import get_all_skills, create_skill, delete_skill, get_skill_by_category
 
+from backend.app.db.session import engine
+from backend.app.db.base import Base
+
+Base.metadata.create_all(bind=engine)
+
+
 app = FastAPI()
 
 class SkillCreate(BaseModel):
